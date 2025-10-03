@@ -1,10 +1,9 @@
 """
 Application settings and configuration
 """
-
 from functools import lru_cache # (함수 캐싱) 설정 인스턴스를 싱글톤으로 사용하기 위해
 from pydantic_settings import BaseSettings # .env 환경변수 읽기
-from pydantic import Field # 필드 지정용
+from pydantic import Field, computed_field # 필드 지정용
 
 
 class Settings(BaseSettings):
@@ -24,13 +23,23 @@ class Settings(BaseSettings):
         default=["http://localhost:1234"],
         description="Allowed CORS origins"
     )
-    
+
     # Database
-    DATABASE_URL: str = Field(
-        default="sqlite:///./mme_bot.db",
-        description="Database connection URL"
-    )
-    
+    POSTGRES_USER: str = Field(..., description="DB user")
+    POSTGRES_PASSWORD: str = Field(..., description="DB password")
+    POSTGRES_HOST: str = Field(default="localhost", description="DB host")
+    POSTGRES_PORT: int = Field(default=5432, description="DB port")
+    POSTGRES_DB: str = Field(..., description="DB name")
+
+    @computed_field(return_type=str)
+    @property
+    def DATABASE_URL(self) -> str:
+        return (
+            # ex) postgresql://$user:$pwd@$host:$port/$db
+            f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
+            f"@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        )
+
     # Security
     SECRET_KEY: str = Field(
         default="secret",

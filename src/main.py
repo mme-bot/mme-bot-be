@@ -13,7 +13,7 @@ from src.config.settings import get_settings
 """비동기 컨텍스트 매니저 데코레이터"""
 # @PostConstruct, @PreDestroy
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan():
     """Application lifespan events"""
     # Startup
     print("🚀 Starting MME Bot API...")
@@ -46,7 +46,7 @@ def create_app() -> FastAPI:
     
     # Include routers
     # @RestController 로 매핑하는 것
-    # app.include_router(users.router, prefix="/api/v1/users", tags=["users"]) # tags -> swagger grouping name
+    #app.include_router(users.router, prefix=f"{settings.API_VERSION}/users", tags=["users"]) # tags -> swagger grouping name
     
     @app.get("/")
     async def root():

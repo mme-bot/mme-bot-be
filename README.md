@@ -38,6 +38,12 @@ uvicorn src.main:app --reload --host 127.0.0.1 --port 8000
 - Swagger UI: http://127.0.0.1:8000/docs
 - ReDoc: http://127.0.0.1:8000/redoc
 
+### docker-compose
+
+```bash
+docker compose up -d
+```
+
 ## 📁 프로젝트 구조
 
 ```

@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:18
+    container_name: postgres_mmebot
+    env_file:
+      - ./.env
+    volumes:
+      - /Users/holiday/pg-data:${PGDATA}
+    ports:
+      - "5432:5432"
